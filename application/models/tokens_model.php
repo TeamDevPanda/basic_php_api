@@ -2,15 +2,14 @@
 
 class Tokens_model extends CI_Model {
 
-	private $tableName = 'users';
 	function __construct()
 	{
 		parent:: __construct();
 	}
 	
-	function add_token($user)
+	function add_token($token)
 	{
-		$this->db->insert('tokens', $user);
+		$this->db->insert('tokens', $token);
 		return ($this->db->insert_id());
 	}
 	
@@ -19,6 +18,14 @@ class Tokens_model extends CI_Model {
 		$this->db->set($data);
 		$this->db->where('id', $id);
 		$this->db->update('tokens');
+	}
+	
+	function get_token_by_id($id, $fields = '*')
+	{
+		$this->db->select($fields);
+		$this->db->from('tokens');
+		$this->db->where('id', $id);
+		return ($this->db->get()->row());
 	}
 }
 

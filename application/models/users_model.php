@@ -2,7 +2,6 @@
 
 class Users_model extends CI_Model {
 
-	private $tableName = 'users';
 	function __construct()
 	{
 		parent:: __construct();
@@ -16,12 +15,21 @@ class Users_model extends CI_Model {
 		return ($this->db->get()->row());
 	}
 	
+	function get_user_by($where, $fields = '*', $ret = 'row')
+	{
+		$this->db->select($fields);
+		$this->db->from('users');
+		$this->db->where($where);
+		if ($ret == 'result')
+			return ($this->db->get()->result());
+		return ($this->db->get()->row());
+	}
+	
 	function add_user($user)
 	{
 		$this->db->insert('users', $user);
 		return ($this->db->insert_id());
 	}
-	
 
 	function edit_user($id, $data)
 	{
@@ -30,9 +38,9 @@ class Users_model extends CI_Model {
 		$this->db->update('users');
 	}
 	
-	function check_creditentials($email, $password)
+	function check_identity($email, $password)
 	{
-		$this->db->select('*');
+		$this->db->select('id, firstname, lastname, email');
 		$this->db->from('users');
 		$this->db->where('email', $email);
 		$this->db->where('password', $password);
